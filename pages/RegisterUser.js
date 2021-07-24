@@ -73,7 +73,9 @@ export default class RegisterUser extends React.Component {
       alert('Please fill Name');
     }
   };
+
   render() {
+    const { user_sizeLabel } = this.state;
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
         <ScrollView keyboardShouldPersistTaps="handled">
@@ -107,7 +109,7 @@ export default class RegisterUser extends React.Component {
               <Picker
                 selectedValue={user_sizeLabel}
                 style={{ marginLeft: 35, marginRight: 35, marginTop: 10, borderColor: '#007FFF', borderWidth: 1}}
-                onValueChange={(itemValue, itemIndex) => setUserPartySize(itemValue)}
+                onValueChange={(itemValue, itemIndex) => user_sizeLabel(itemValue)}
               >
                 <Picker.Item label="1" value="1" />
                 <Picker.Item label="2" value="2" />
