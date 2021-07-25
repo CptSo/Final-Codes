@@ -22,50 +22,30 @@ export default class RegisterUser extends React.Component {
       user_name: '',
       user_contact: '',
       user_address: '',
-      user_contact1: '',
+      user_sizeLabel: '',
     };
   }
+
   register_user = () => {
     var that = this;
     const { user_name } = this.state;
     const { user_contact } = this.state;
     const { user_address } = this.state;
     const { user_contact1 } = this.state;
-    if (user_name) {
-      if (user_contact) {
-        if (user_address) {
-            db.transaction(function (tx) {
-              tx.executeSql(
-                'INSERT INTO table_user (user_name, user_contact, user_address, user_contact1) VALUES (?,?,?)',
-                [user_name, user_contact, user_address, user_contact1],
-                (tx, results) => {
-                  console.log('Results', results.rowsAffected);
-                  if (results.rowsAffected > 0) {
-                    Alert.alert('You are Registered Successfully',
-                      [
-                        {
-                          text: 'Ok',
-                          onPress: () =>
-                            that.props.navigation.navigate('HomeScreen'),
-                        },
-                      ],
-                      { cancelable: false }
-                    );
-                  } else {
-                    alert('Registration Failed');
-                  }
-                }
-              );
-            });
-        } else {
-          alert('Please fill Address');
+    db.transaction(function (tx) {
+      tx.executeSql(
+        'INSERT INTO table_user (user_name, user_contact, user_address, user_contact1) VALUES (?,?,?,?)',
+        [user_name, user_contact, user_address, user_contact1],
+        (tx, results) => {
+          console.log('Results', results.rowsAffected);
+          if (results.rowsAffected > 0) {
+            Alert.alert('You are Registered Successfully');
+          } else {
+            alert('Registration Failed');
+          }
         }
-      } else {
-        alert('Please fill Contact Number');
-      }
-    } else {
-      alert('Please fill Name');
-    }
+      );
+    });
   };
 
   render() {
