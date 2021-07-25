@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   ScrollView,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Mytextinput from './components/Mytextinput';
 import Mybutton from './components/Mybutton';
-import DropDownPicker from 'react-native-dropdown-picker';
+//import DropDownPicker from 'react-native-dropdown-picker';
 
 import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('UserDatabase.db');
@@ -22,7 +22,7 @@ export default class RegisterUser extends React.Component {
       user_name: '',
       user_contact: '',
       user_address: '',
-      user_sizeLabel: '',
+      user_contact1: '',
     };
   }
   register_user = () => {
@@ -30,21 +30,18 @@ export default class RegisterUser extends React.Component {
     const { user_name } = this.state;
     const { user_contact } = this.state;
     const { user_address } = this.state;
-    const { user_sizeLabel } = this.state;
+    const { user_contact1 } = this.state;
     if (user_name) {
       if (user_contact) {
         if (user_address) {
-          if (user_sizeLabel) {
             db.transaction(function (tx) {
               tx.executeSql(
-                'INSERT INTO table_user (user_name, user_contact, user_address, user_sizeLabel) VALUES (?,?,?,?)',
-                [user_name, user_contact, user_address, user_sizeLabel],
+                'INSERT INTO table_user (user_name, user_contact, user_address, user_contact1) VALUES (?,?,?)',
+                [user_name, user_contact, user_address, user_contact1],
                 (tx, results) => {
                   console.log('Results', results.rowsAffected);
                   if (results.rowsAffected > 0) {
-                    Alert.alert(
-                      'Success',
-                      'You are Registered Successfully',
+                    Alert.alert('You are Registered Successfully',
                       [
                         {
                           text: 'Ok',
@@ -60,9 +57,6 @@ export default class RegisterUser extends React.Component {
                 }
               );
             });
-          } else {
-            alert('Please choose party size');
-          }
         } else {
           alert('Please fill Address');
         }
@@ -75,7 +69,6 @@ export default class RegisterUser extends React.Component {
   };
 
   render() {
-    const { user_sizeLabel } = this.state;
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
         <ScrollView keyboardShouldPersistTaps="handled">
@@ -102,26 +95,13 @@ export default class RegisterUser extends React.Component {
               multiline={true}
               style={{ textAlignVertical: 'top', padding: 10 }}
             />
-
-            <Text style = {{ marginLeft: 35, marginTop: 10, color: "#007FFF"}}>
-                Table for:
-              </Text>
-              <Picker
-                selectedValue={user_sizeLabel}
-                style={{ marginLeft: 35, marginRight: 35, marginTop: 10, borderColor: '#007FFF', borderWidth: 1}}
-                onValueChange={(itemValue, itemIndex) => user_sizeLabel(itemValue)}
-              >
-                <Picker.Item label="1" value="1" />
-                <Picker.Item label="2" value="2" />
-                <Picker.Item label="3" value="3" />
-                <Picker.Item label="4" value="4" />
-                <Picker.Item label="5" value="5" />
-                <Picker.Item label="6" value="6" />
-                <Picker.Item label="7" value="7" />
-                <Picker.Item label="8" value="8" />
-                <Picker.Item label="9" value="9" />
-                <Picker.Item label="10" value="10" />
-              </Picker>
+            <Mytextinput
+              placeholder="Enter Contact No2"
+              onChangeText={(user_contact1) => this.setState({ user_contact1 })}
+              maxLength={10}
+              keyboardType="numeric"
+              style={{ padding: 10 }}
+            />
 
             <Mybutton
               title="Submit"

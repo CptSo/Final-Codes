@@ -18,7 +18,7 @@ export default class HomeScreen extends React.Component {
           if (res.rows.length == 0) {
             txn.executeSql("DROP TABLE IF EXISTS table_user", []);
             txn.executeSql(
-              "CREATE TABLE IF NOT EXISTS table_user(user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name VARCHAR(20), user_contact INT(10), user_address VARCHAR(255))",
+              "CREATE TABLE IF NOT EXISTS table_user(user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name VARCHAR(20), user_contact INT(10), user_address VARCHAR(255), user_contact1 INT(10))",
               []
             );
           }
